@@ -17,7 +17,7 @@ use artemis_light::{
 use async_trait::async_trait;
 use tracing::{debug, info, warn};
 
-use artemis_playground::{
+use artemis_light_playground::{
     common::{
         self,
         anvil::AnvilProcess,

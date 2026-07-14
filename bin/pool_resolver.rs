@@ -11,7 +11,7 @@ use artemis_light::{
     types::{ActionStream, Strategy},
 };
 
-use artemis_playground::{
+use artemis_light_playground::{
     common::{
         engine::*, pools::PoolResolver, provider::build_provider_ws, telemetry::Telemetry,
         tx::log_swap,

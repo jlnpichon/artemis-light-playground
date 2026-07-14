@@ -12,7 +12,7 @@ use artemis_light::{
     types::{ActionStream, Strategy},
 };
 
-use artemis_playground::{
+use artemis_light_playground::{
     common::{
         engine::*,
         pools::{compute_price_impact, PoolResolver, Wad, WadPercent},

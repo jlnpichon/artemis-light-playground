@@ -12,7 +12,7 @@ use artemis_light::{
     types::{ActionStream, Strategy},
 };
 
-use artemis_playground::common::{
+use artemis_light_playground::common::{
     addresses::is_uniswap_router, engine::*, provider::build_provider_ws, telemetry::Telemetry,
     tx::short_addr,
 };
