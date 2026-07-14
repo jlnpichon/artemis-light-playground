@@ -1,4 +1,4 @@
-# artemis-playground
+# artemis-light-playground
 
 > Learning Ethereum MEV concepts with [artemis-light](https://github.com/paradigmxyz/artemis-light)
 

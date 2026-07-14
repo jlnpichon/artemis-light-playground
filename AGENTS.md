@@ -1,4 +1,4 @@
-# artemis-playground — Agent instructions
+# artemis-light-playground — Agent instructions
 
 ## Project
 
