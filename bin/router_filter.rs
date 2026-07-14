@@ -1,0 +1,64 @@
+use std::sync::Arc;
+
+use alloy::{consensus::Transaction as _, rpc::types::Transaction};
+use anyhow::Result;
+use async_trait::async_trait;
+use tracing::info;
+
+use artemis_light::{
+    collector_ext::CollectorExt,
+    collectors::MempoolCollector,
+    engine::Engine,
+    types::{ActionStream, Strategy},
+};
+
+use artemis_playground::common::{
+    addresses::is_uniswap_router, engine::*, provider::build_provider_ws, telemetry::Telemetry,
+    tx::short_addr,
+};
+
+#[derive(Debug, Clone)]
+enum Event {
+    UniswapRouter(Transaction),
+}
+
+struct PrinterStrategy;
+
+#[async_trait]
+impl Strategy<Event, ()> for PrinterStrategy {
+    async fn sync_state(&mut self) -> Result<()> {
+        Ok(())
+    }
+
+    async fn process_event(&mut self, event: Event) -> Result<ActionStream<'_, ()>> {
+        let Event::UniswapRouter(transaction) = event;
+
+        info!(
+            to = short_addr(transaction.to().expect("filtered tx without target")),
+            "uniswap router"
+        );
+
+        Ok(Box::pin(futures::stream::empty()))
+    }
+}
+
+#[tokio::main]
+async fn main() -> Result<()> {
+    init_tracing();
+
+    let telemetry = Telemetry::new();
+    let mut engine = Engine::<Event, ()>::default();
+    let provider = Arc::new(build_provider_ws().await?);
+
+    let mpool_collector = MempoolCollector::new(provider.clone()).filter_map(|tx: Transaction| {
+        tx.to()
+            .filter(|addr| is_uniswap_router(*addr))
+            .map(|_| Event::UniswapRouter(tx))
+    });
+
+    engine.add_collector(Box::new(mpool_collector));
+    engine.add_strategy(Box::new(PrinterStrategy));
+    engine.add_observer(Box::new(telemetry.clone()));
+
+    run_engine(engine, telemetry.events).await
+}

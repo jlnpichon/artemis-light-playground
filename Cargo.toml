@@ -1,0 +1,56 @@
+[package]
+name = "artemis-playground"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "pending_printer"
+path = "bin/pending_printer.rs"
+
+[[bin]]
+name = "router_filter"
+path = "bin/router_filter.rs"
+
+[[bin]]
+name = "defi_printer"
+path = "bin/defi_printer.rs"
+
+[[bin]]
+name = "pool_resolver"
+path = "bin/pool_resolver.rs"
+
+[[bin]]
+name = "price_impact"
+path = "bin/price_impact.rs"
+
+[[bin]]
+name = "transaction_sim"
+path = "bin/transaction_sim.rs"
+
+[[bin]]
+name = "sim_accuracy"
+path = "bin/sim_accuracy.rs"
+
+[dependencies]
+alloy = { version = "1.8.3", features = [
+  "pubsub",
+  "provider-ws",
+  "sol-types",
+  "provider-anvil-node",
+  "provider-anvil-api",
+] }
+anvil = "0.3.2"
+anyhow = "1.0.103"
+artemis-light = "0.1.0"
+async-trait = "0.1.89"
+dashmap = "6.2.1"
+dotenvy = "0.15.7"
+futures = "0.3.32"
+hex = "0.4.3"
+tokio = { version = "1.52.3", features = [
+  "macros",
+  "rt-multi-thread",
+  "signal",
+] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
